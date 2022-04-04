@@ -28,7 +28,7 @@ const App = () => {
   return (
     <AppContextProvider>
       <Web3ReactProvider getLibrary={getLibrary}>
-        <BrowserRouter>
+        <BrowserRouter basename="/booking-system">
           <Container>
             <GlobalError />
             <Notifications />
