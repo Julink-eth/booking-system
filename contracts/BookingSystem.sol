@@ -3,6 +3,11 @@ pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 
+/**
+ @title Booking Sytem contract
+ @author Julien Fontanel
+ @notice Allows a user to book/cancel a meeting room at specific hours of the day, for "COLA Day"
+ */
 contract BookingSystem {
     //Number of meeting rooms available for one company at a specific hour
     uint256 public constant ROOMS_BY_COMPANY = 10;
@@ -25,14 +30,14 @@ contract BookingSystem {
 
     //Mapping to retreive the meeting room's booking info by room number and by hour of the day
     mapping(uint256 => mapping(uint256 => Reservation)) public reservations;
-    //Mapping to get the number of meeting rooms booked from the company PEPSI at a specific hour
+    //Mapping to get the number of meeting rooms booked from a company at a specific hour
     mapping(bytes1 => mapping(uint256 => uint256)) public roomsByCompanyByHour;
 
     /**
      @notice Checks if a meeting room is available at a specific hour for the company passed in parameters
      @param roomNumber uint256 The meeting room number to book
      @param hour uint256 The hour of the day to book the meeting room
-     @param company bytes1 The user's company who is Reservation the room
+     @param company bytes1 The user's company who wants to book the meeting room
     */
     modifier roomAvailable(
         uint256 roomNumber,
@@ -75,7 +80,7 @@ contract BookingSystem {
 
     /**
      @notice Checks if the room number passed is correct
-     @param roomNumber uint256 The hour of the day of the reservation to check
+     @param roomNumber uint256 The room number of the reservation to check
     */
     modifier correctRoomNumber(uint256 roomNumber) {
         require(
@@ -95,7 +100,7 @@ contract BookingSystem {
      @notice Book a meeting room at a specific hour
      @param roomNumber uint256 The meeting room number to book
      @param hour uint256 The hour of the day to book the meeting room
-     @param company bytes1 The user's company who is Reservation the room
+     @param company bytes1 The user's company who is booking the meeting room
      */
     function book(
         uint256 roomNumber,
@@ -112,7 +117,7 @@ contract BookingSystem {
         newReservation.company = company;
         newReservation.user = msg.sender;
 
-        //Increment the number of meeting rooms booked from this company
+        //Increment the number of meeting rooms booked from this company at this hour
         roomsByCompanyByHour[company][hour] += 1;
 
         emit MeetingRoomBooked(roomNumber, hour, company);
@@ -132,7 +137,7 @@ contract BookingSystem {
         //Delete the reservation
         delete reservations[roomNumber][hour];
 
-        //Decrease the number of meeting rooms booked from this company
+        //Decrease the number of meeting rooms booked from this company at this hour
         roomsByCompanyByHour[company][hour] -= 1;
 
         emit ReservationCanceled(roomNumber, hour, company);
@@ -166,7 +171,7 @@ contract BookingSystem {
     /**
      @notice Returns all the hours for which the meeting room passed is available
      @param roomNumber uint256 The meeting room number to book
-     @param company bytes1 The user's company who is Reservation the room
+     @param company bytes1 The user's company who is booking the meeting room
      @return hoursAvailable bool[9] All the hours available to reserve this meeting room
      */
     function getHoursAvailable(uint256 roomNumber, bytes1 company)
@@ -201,7 +206,7 @@ contract BookingSystem {
         uint256 indexRoom = 0;
         for (uint256 i = ROOM_NUMBER_MIN; i <= ROOM_NUMBER_MAX; i++) {
             uint256[9] memory hoursBooked;
-            //Browse all the hours
+            //Browse all the hours for each meeting room
             uint256 indexHour = 0;
             for (uint256 j = HOUR_MIN; j <= HOUR_MAX; j++) {
                 if (reservations[i][j].user == user) {
