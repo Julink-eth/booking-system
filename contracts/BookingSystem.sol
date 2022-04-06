@@ -90,6 +90,15 @@ contract BookingSystem {
         _;
     }
 
+    /**
+     @notice Checks if the company passed is correct
+     @param company bytes1 The company to check
+    */
+    modifier correctCompany(bytes1 company) {
+        require(company == 0x0 || company == 0x01, "COMPANY_INVALID");
+        _;
+    }
+
     event MeetingRoomBooked(uint256 roomNumber, uint256 hour, bytes1 company);
 
     event ReservationCanceled(uint256 roomNumber, uint256 hour, bytes1 company);
@@ -111,6 +120,7 @@ contract BookingSystem {
         roomAvailable(roomNumber, hour, company)
         correctHour(hour)
         correctRoomNumber(roomNumber)
+        correctCompany(company)
     {
         //Store the new reservation
         Reservation storage newReservation = reservations[roomNumber][hour];

@@ -12,7 +12,7 @@ const MAX_ROOMS_BY_COMPANY = 10;
 const roomNumber1 = 1;
 const hourToTest = 9;
 const cokeCompany = [0x0];
-const pepsiCOmpany = [0x1];
+const pepsiCompany = [0x1];
 
 beforeEach(async () => {
   accounts = await ethers.getSigners();
@@ -113,7 +113,7 @@ describe("BookingSystem", function () {
       }
 
       await expect(
-        bookingSystem.book(MAX_ROOMS_BY_COMPANY + 1, hourToTest, pepsiCOmpany)
+        bookingSystem.book(MAX_ROOMS_BY_COMPANY + 1, hourToTest, pepsiCompany)
       ).to.be.not.revertedWith("MEETING_ROOM_NOT_AVAILABLE");
     }
   );

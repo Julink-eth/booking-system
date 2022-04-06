@@ -76,7 +76,7 @@ npm start
 Open [http://localhost:3000/](http://localhost:3000/) to see your Dapp.  
 You will need to have [Metamask](https://metamask.io) installed and listening to
 `localhost 8545`.  
-The contract is also deployed on the Rinkeby testnet at this address : 0x0B88C4Bc995C96e4CBdAdEFa71F1f47718D51A5B
+The contract is also deployed on the Rinkeby testnet at this address : 0x214A1F4EC2E3D5f97C69D93C087842F76b568D1F
 So you can also test the front end with metamask on Rinkeby testnet.  
 Moreover a frontend has been deployed using github pages : https://julink-eth.github.io/booking-system/
 
